@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ru" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Терапевтическая группа «Где моя энергия» | Марина Яхницкая, Краснодар</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        olive: {
+                            50: '#F4F6F2',
+                            100: '#E2E8DC',
+                            600: '#5A6351',
+                            700: '#464E3F',
+                            800: '#343A2E'
+                        },
+                        sand: {
+                            50: '#FBF9F5',
+                            100: '#F2EDE4',
+                            200: '#E5DCCE',
+                        },
+                        terracotta: {
+                            500: '#C87D55',
+                            600: '#B06842'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 220, 206, 0.6);
+        }
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            transform: scale(0.95);
+            transition: all 0.3s ease-in-out;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-sand-50 text-olive-800 font-sans antialiased selection:bg-olive-100 selection:text-olive-800">
+
+    <!-- Навигация -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-card border-b border-sand-200 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Логотип слева в шапке -->
+            <a href="#" class="flex items-center gap-3 group py-2">
+                <div class="h-12 sm:h-14 flex items-center">
+                    <img src="_9_.png" alt="Логотип Марина Яхницкая" class="h-full w-auto object-contain group-hover:scale-105 transition-transform duration-300">
+                </div>
+            </a>
+
+            <!-- Навигационное меню по центру -->
+            <nav class="hidden lg:flex items-center justify-center gap-7 text-sm font-medium text-olive-700 whitespace-nowrap absolute left-1/2 -translate-x-1/2">
+                <a href="#about" class="hover:text-terracotta-500 transition-colors">О группе</a>
+                <a href="#why-9-months" class="hover:text-terracotta-500 transition-colors">Формат 9 месяцев</a>
+                <a href="#methods" class="hover:text-terracotta-500 transition-colors">Методы</a>
+                <a href="#reviews" class="hover:text-terracotta-500 transition-colors">Отзывы</a>
+                <a href="#organizer" class="hover:text-terracotta-500 transition-colors">Ведущая</a>
+                <a href="#details" class="hover:text-terracotta-500 transition-colors">Условия</a>
+            </nav>
+
+            <!-- Компактное меню для планшетов -->
+            <nav class="hidden md:flex lg:hidden items-center justify-center gap-4 text-xs font-medium text-olive-700 whitespace-nowrap absolute left-1/2 -translate-x-1/2">
+                <a href="#about" class="hover:text-terracotta-500 transition-colors">О группе</a>
+                <a href="#why-9-months" class="hover:text-terracotta-500 transition-colors">Формат</a>
+                <a href="#methods" class="hover:text-terracotta-500 transition-colors">Методы</a>
+                <a href="#reviews" class="hover:text-terracotta-500 transition-colors">Отзывы</a>
+                <a href="#details" class="hover:text-terracotta-500 transition-colors">Условия</a>
+            </nav>
+
+            <!-- Кнопка Записаться справа -->
+            <div class="flex items-center gap-3 ml-auto">
+                <button type="button" onclick="openContactModal()" class="hidden md:inline-flex bg-olive-600 hover:bg-olive-700 text-white px-8 py-3 rounded-full text-sm font-medium transition-all shadow-sm hover:shadow items-center justify-center whitespace-nowrap cursor-pointer">
+                    <span>Записаться</span>
+                </button>
+
+                <button id="menu-btn" aria-label="Открыть меню" class="md:hidden p-2 text-olive-800 focus:outline-none">
+                    <i data-lucide="menu" class="w-7 h-7"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Мобильное выпадающее меню -->
+        <div id="mobile-menu" class="hidden md:hidden bg-sand-50 border-b border-sand-200 px-6 py-6 space-y-4 shadow-lg">
+            <a href="#about" class="block text-base font-medium text-olive-700 hover:text-terracotta-500">О группе</a>
+            <a href="#why-9-months" class="block text-base font-medium text-olive-700 hover:text-terracotta-500">Формат 9 месяцев</a>
+            <a href="#methods" class="block text-base font-medium text-olive-700 hover:text-terracotta-500">Методы</a>
+            <a href="#reviews" class="block text-base font-medium text-olive-700 hover:text-terracotta-500">Отзывы участников</a>
+            <a href="#organizer" class="block text-base font-medium text-olive-700 hover:text-terracotta-500">Ведущая</a>
+            <a href="#details" class="block text-base font-medium text-olive-700 hover:text-terracotta-500">Условия</a>
+            <div class="pt-4 border-t border-sand-200 flex flex-col gap-3">
+                <button type="button" onclick="openContactModal(); toggleMobileMenu();" class="w-full text-center bg-olive-600 text-white py-3.5 rounded-full font-medium shadow flex items-center justify-center gap-2 cursor-pointer">
+                    Записаться
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Главный экран (Hero) -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-olive-800 text-white">
+        <div class="absolute inset-0 z-0 opacity-30 mix-blend-overlay">
+            <img src="2cf3f4ca-55cb-49d2-812d-40fef541de20.jfif" alt="Марина Яхницкая" class="w-full h-full object-cover object-center">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-r from-olive-800 via-olive-800/90 to-olive-800/60 z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl">
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <span class="bg-olive-700/80 text-sand-100 border border-olive-600 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        Очный формат • Краснодар
+                    </span>
+                    <span class="bg-terracotta-500/90 text-white px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        Третий сезон
+                    </span>
+                </div>
+
+                <h1 class="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight mb-6">
+                    Терапевтическая группа <br><span class="italic font-normal text-sand-200">«Где моя энергия»</span>
+                </h1>
+
+                <p class="text-base sm:text-xl text-sand-100/90 leading-relaxed mb-10 max-w-2xl font-light">
+                    О возвращении контакта с собой, своими желаниями и жизненными силами. Перестаньте тратить энергию на тревогу, вину и «надо» — начните направлять её на то, что действительно важно.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                    <button type="button" onclick="openContactModal()" class="bg-terracotta-500 hover:bg-terracotta-600 text-white px-8 py-4 rounded-full font-medium text-center transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group cursor-pointer">
+                        <span>Занять место в группе</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    <a href="#about" class="border border-sand-200/40 hover:border-sand-200 text-sand-100 px-8 py-4 rounded-full font-medium text-center transition-all hover:bg-white/5">
+                        Узнать подробнее
+                    </a>
+                </div>
+
+                <div class="mt-12 flex flex-wrap items-center gap-6 text-sm text-sand-200/80">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="users" class="w-5 h-5 text-terracotta-500"></i>
+                        <span>Группа 6–8 человек</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-5 h-5 text-terracotta-500"></i>
+                        <span>19 встреч / 9 месяцев</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- О чем эта группа -->
+    <section id="about" class="py-24 bg-sand-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-terracotta-500 font-semibold text-sm uppercase tracking-widest block mb-3">О проекте</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-olive-800 mb-6">О чём эта группа?</h2>
+                <p class="text-olive-700 text-lg leading-relaxed font-light">
+                    Это безопасное пространство для тех, кто устал жить на автопилоте и расходовать себя на чужие ожидания. Здесь мы бережно учимся слышать собственные истинные потребности.
+                </p>
+            </div>
+
+            <!-- Увеличенная картинка группы (grup.jpeg) -->
+            <div class="max-w-5xl mx-auto mb-16 rounded-3xl overflow-hidden shadow-2xl border border-sand-200 bg-white">
+                <div class="relative aspect-video sm:aspect-[16/9] overflow-hidden">
+                    <img src="grup.jpeg" alt="Атмосфера терапевтической группы" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-olive-800/70 via-transparent to-transparent flex items-end p-6 sm:p-10">
+                        <p class="text-white font-serif text-xl sm:text-2xl italic">«Возвращение жизненной силы, тепла и баланса»</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <div class="glass-card p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-olive-100/80 border border-olive-200 flex items-center justify-center text-terracotta-500 mb-6 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/><line x1="10" x2="10" y1="10" y2="14"/><line x1="8" x2="12" y1="12" y2="12"/></svg>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-olive-800 mb-3">Усталость и выгорание</h3>
+                        <p class="text-olive-700/80 text-sm leading-relaxed">
+                            Тем, кто чувствует постоянный упадок сил (особенно актуально для мам в декрете), и хочет вернуть радость жизни.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-olive-100/80 border border-olive-200 flex items-center justify-center text-terracotta-500 mb-6 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-olive-800 mb-3">Эмоции и реакции</h3>
+                        <p class="text-olive-700/80 text-sm leading-relaxed">
+                            Тем, кто хочет глубже понимать свои чувства, научиться экологично проживать эмоции и отстаивать личные границы.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-olive-100/80 border border-olive-200 flex items-center justify-center text-terracotta-500 mb-6 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-olive-800 mb-3">Глубокие перемены</h3>
+                        <p class="text-olive-700/80 text-sm leading-relaxed">
+                            Тем, кто готов к серьезной терапевтической работе в группе и долгосрочным трансформациям своей жизни.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-olive-100/80 border border-olive-200 flex items-center justify-center text-terracotta-500 mb-6 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.2 1.2L3 12l5.8 1.9a2 2 0 0 1 1.2 1.2L12 21l1.9-5.8a2 2 0 0 1 1.2-1.2L21 12l-5.8-1.9a2 2 0 0 1-1.2-1.2Z"/></svg>
+                        </div>
+                        <h3 class="font-serif font-bold text-xl text-olive-800 mb-3">Рождение важного</h3>
+                        <p class="text-olive-700/80 text-sm leading-relaxed">
+                            Тем, кто хочет «выносить» и реализовать проект, сменить профессию, развить бизнес или подготовиться к материнству.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Блок "Для женщин и мужчин" со светлым фоном и контрастным текстом -->
+            <div class="relative rounded-3xl overflow-hidden shadow-xl bg-sand-100 text-olive-800 grid grid-cols-1 lg:grid-cols-12 border border-sand-200 items-center">
+                <div class="lg:col-span-5 h-[420px] sm:h-[480px] lg:h-full relative bg-sand-200/50 flex items-center justify-center p-6">
+                    <img src="zagruzhennoe.jpeg" alt="Внутренний свет и гармония" class="w-full h-full object-cover rounded-2xl shadow-md">
+                </div>
+                <div class="lg:col-span-7 p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
+                    <span class="text-terracotta-600 uppercase tracking-widest text-xs font-semibold mb-3">Для женщин и мужчин</span>
+                    <h3 class="font-serif text-3xl font-bold text-olive-800 mb-6">Уникальный формат взаимодействия</h3>
+                    <p class="text-olive-700 leading-relaxed font-light mb-8 text-base sm:text-lg">
+                        В группу приглашаются как женщины, так и мужчины. Смешанный состав позволяет в безопасной и конфиденциальной атмосфере получить новый опыт общения, услышать противоположный пол и исцелить старые сценарии отношений.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-terracotta-500/20 border border-terracotta-500/40 flex items-center justify-center text-terracotta-600 font-bold font-serif text-lg">
+                            3
+                        </div>
+                        <div>
+                            <div class="font-semibold text-olive-900">Успешный третий сезон</div>
+                            <div class="text-sm text-olive-700/80">Реальные истории участников прошлых потоков</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Почему 9 месяцев -->
+    <section id="why-9-months" class="py-24 bg-sand-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-terracotta-500 font-semibold text-sm uppercase tracking-widest block mb-3">Глубинный процесс</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-olive-800 mb-6">Почему именно 9 месяцев?</h2>
+                    <p class="text-olive-700 text-lg leading-relaxed font-light mb-6">
+                        Девять месяцев — не случайная цифра. Это время, необходимое для того, чтобы сформировалось глубокое доверие, случились по-настоящему важные внутренние перестройки и появилась возможность завершить отношения экологично.
+                    </p>
+                    <p class="text-olive-700 text-lg leading-relaxed font-light mb-8">
+                        Этот процесс во многом схож с зачатием, вынашиванием и рождением нового качества жизни. На группе можно «выносить» и родить мечту, новый проект, бизнес или обрести ресурс для материнства.
+                    </p>
+                    <div class="bg-white/80 border border-sand-200 p-6 rounded-2xl shadow-sm">
+                        <h4 class="font-serif font-bold text-olive-800 text-lg mb-2">Результаты прошлых потоков:</h4>
+                        <p class="text-olive-700/80 text-sm leading-relaxed">
+                            Участники прошлых потоков делятся реальными победами: это реализованные амбициозные мечты, родившиеся бизнесы, а также долгожданные дети, появившиеся на свет после завершения проекта.
+                        </p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="aspect-4/3 rounded-3xl overflow-hidden shadow-2xl border border-sand-200 bg-sand-200 relative">
+                        <img src="process_9months.jpg" alt="Психологическая группа" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="absolute -bottom-6 left-6 right-6 sm:left-auto sm:-left-6 sm:right-auto bg-olive-800 text-white p-6 rounded-2xl shadow-xl sm:max-w-xs">
+                        <p class="font-serif italic text-sm text-sand-100">«Пространство, где рождаются настоящие изменения и возвращаются жизненные силы».</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Методы работы -->
+    <section id="methods" class="py-24 bg-sand-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-terracotta-500 font-semibold text-sm uppercase tracking-widest block mb-3">Инструменты терапии</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-olive-800 mb-6">Как мы будем работать?</h2>
+                <p class="text-olive-700 text-lg leading-relaxed font-light">
+                    На группе используется бережный разговорный формат в сочетании с глубокими проективными методами, которые обходят рациональные защиты и работают на глубинном уровне.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="w-12 h-12 rounded-xl bg-olive-100 flex items-center justify-center text-olive-700 mb-6 font-serif font-bold text-lg text-terracotta-500">
+                        01
+                    </div>
+                    <h3 class="font-serif font-bold text-xl text-olive-800 mb-3">МАК</h3>
+                    <p class="text-xs uppercase font-semibold text-terracotta-500 tracking-wider mb-3">Метафорические ассоциативные карты</p>
+                    <p class="text-olive-700/80 text-sm leading-relaxed">
+                        Инструмент для безопасного доступа к бессознательным образам, скрытым ресурсам и ответам на самые важные вопросы.
+                    </p>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="w-12 h-12 rounded-xl bg-olive-100 flex items-center justify-center text-olive-700 mb-6 font-serif font-bold text-lg text-terracotta-500">
+                        02
+                    </div>
+                    <h3 class="font-serif font-bold text-xl text-olive-800 mb-3">Арт-терапия</h3>
+                    <p class="text-xs uppercase font-semibold text-terracotta-500 tracking-wider mb-3">Рисование и творчество</p>
+                    <p class="text-olive-700/80 text-sm leading-relaxed">
+                        Выражение чувств, напряжения и внутренних переживаний через визуальные образы и цвета, когда слов становится недостаточно.
+                    </p>
+                </div>
+
+                <div class="glass-card p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div class="w-12 h-12 rounded-xl bg-olive-100 flex items-center justify-center text-olive-700 mb-6 font-serif font-bold text-lg text-terracotta-500">
+                        03
+                    </div>
+                    <h3 class="font-serif font-bold text-xl text-olive-800 mb-3">Добаюкивание</h3>
+                    <p class="text-xs uppercase font-semibold text-terracotta-500 tracking-wider mb-3">Бережное сопровождение</p>
+                    <p class="text-olive-700/80 text-sm leading-relaxed">
+                        Глубокая телесно-ориентированная практика для возвращения к ранним опытам, исцеления детских травм и обретения базовой безопасности.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- БЛОК С ОТЗЫВАМИ УЧАСТНИКОВ -->
+    <section id="reviews" class="py-24 bg-sand-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-terracotta-500 font-semibold text-sm uppercase tracking-widest block mb-3">Отзывы участников</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-olive-800 mb-6">Что говорят о группе</h2>
+                <p class="text-olive-700 text-lg leading-relaxed font-light">
+                    Живые слова и искренние впечатления тех, кто уже прошел этот глубокий путь трансформации.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Отзыв 1 (Из рукописного материала) -->
+                <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-sand-200">
+                    <div>
+                        <div class="flex items-center gap-1 text-terracotta-500 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-olive-700 text-sm leading-relaxed mb-6 font-light italic">
+                            «Благодарю Марину за проведенные теплые встречи! Ты профессионал своего дела и очень замечательный человек. Я обрела больше опорности, научилась экологично общаться с супругом и детьми, устанавливать границы и продвигать свои идеи».
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                        <span class="font-serif font-bold text-olive-800 text-sm">Участница группы</span>
+                        <span class="text-xs text-olive-600/70">Прошлый поток</span>
+                    </div>
+                </div>
+
+                <!-- Отзыв 2 (Из рукописного материала) -->
+                <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-sand-200">
+                    <div>
+                        <div class="flex items-center gap-1 text-terracotta-500 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-olive-700 text-sm leading-relaxed mb-6 font-light italic">
+                            «Энергии в жизни действительно стало больше, и она потекла очень мягко и без насилия! Я стала прислушиваться к себе и не тянуть лишнего. Группа подарила мне яркость и жизнь не на автопилоте».
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                        <span class="font-serif font-bold text-olive-800 text-sm">Участница группы</span>
+                        <span class="text-xs text-olive-600/70">Прошлый поток</span>
+                    </div>
+                </div>
+
+                <!-- Отзыв 3 (Из рукописного материала) -->
+                <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-sand-200">
+                    <div>
+                        <div class="flex items-center gap-1 text-terracotta-500 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-olive-700 text-sm leading-relaxed mb-6 font-light italic">
+                            «Марина создала настолько теплое, безопасное и комфортное пространство, где всегда чувствуешь доверие и расслабление. Место, где я могу быть собой, довериться и быть принятой всегда и любой!»
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                        <span class="font-serif font-bold text-olive-800 text-sm">Участница группы</span>
+                        <span class="text-xs text-olive-600/70">Прошлый поток</span>
+                    </div>
+                </div>
+
+                <!-- Отзыв 4 (Дополнительный) -->
+                <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-sand-200">
+                    <div>
+                        <div class="flex items-center gap-1 text-terracotta-500 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-olive-700 text-sm leading-relaxed mb-6 font-light italic">
+                            «Участие в группе стало для меня поворотным моментом. Благодаря бережному подходу Марины я смогла выйти из эмоционального выгорания и нашла силы на реализацию давно задуманного проекта».
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                        <span class="font-serif font-bold text-olive-800 text-sm">Участница группы</span>
+                        <span class="text-xs text-olive-600/70">Прошлый поток</span>
+                    </div>
+                </div>
+
+                <!-- Отзыв 5 (Дополнительный) -->
+                <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-sand-200">
+                    <div>
+                        <div class="flex items-center gap-1 text-terracotta-500 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-olive-700 text-sm leading-relaxed mb-6 font-light italic">
+                            «Огромная ценность этого формата — в синергии участников и глубоком профессионализме ведущей. Каждая встреча давала пищу для размышлений и мощный ресурс на две недели вперед».
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                        <span class="font-serif font-bold text-olive-800 text-sm">Участник группы</span>
+                        <span class="text-xs text-olive-600/70">Первый поток</span>
+                    </div>
+                </div>
+
+                <!-- Отзыв 6 (Дополнительный) -->
+                <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between border border-sand-200">
+                    <div>
+                        <div class="flex items-center gap-1 text-terracotta-500 mb-4">
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        </div>
+                        <p class="text-olive-700 text-sm leading-relaxed mb-6 font-light italic">
+                            «Рекомендую каждому, кто чувствует, что застрял и потерял ориентиры. Это инвестиция в себя, которая окупается спокойствием, уверенностью и внутренней свободой».
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-sand-200 flex items-center justify-between">
+                        <span class="font-serif font-bold text-olive-800 text-sm">Участница группы</span>
+                        <span class="text-xs text-olive-600/70">Первый поток</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ведущая -->
+    <section id="organizer" class="py-24 bg-olive-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-olive-600/50 aspect-3/4 bg-olive-700">
+                        <img src="2cf3f4ca-55cb-49d2-812d-40fef541de20.jfif" alt="Марина Яхницкая" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="lg:col-span-7">
+                    <span class="text-terracotta-500 uppercase tracking-widest text-xs font-semibold mb-3 block">Автор и ведущая группы</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold mb-6">Марина Яхницкая</h2>
+                    
+                    <p class="text-sand-100/90 text-lg leading-relaxed font-light mb-6">
+                        Семейный и перинатальный психолог, гештальт-терапевт, супервизор, Wingwave-коуч. Магистр психологии (КубГУ), действительный член Общероссийской профессиональной психотерапевтической лиги (ОППЛ).
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                        <div class="bg-olive-700/60 p-4 rounded-xl border border-olive-600/50">
+                            <div class="text-terracotta-500 font-bold font-serif text-xl mb-1">8+ лет</div>
+                            <div class="text-xs text-sand-200">регулярной профессиональной практики</div>
+                        </div>
+                        <div class="bg-olive-700/60 p-4 rounded-xl border border-olive-600/50">
+                            <div class="text-terracotta-500 font-bold font-serif text-xl mb-1">3000+ часов</div>
+                            <div class="text-xs text-sand-200">клиентских сессий</div>
+                        </div>
+                    </div>
+
+                    <p class="text-sand-200/80 text-sm mb-8 font-light">
+                        Мама троих детей, 20 лет в браке. Помогаю находить путь к себе, выстраивать гармоничные отношения с собой и миром, преодолевать личностные и возрастные кризисы.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="https://psyhologyahnickaya.ru/" target="_blank" rel="noopener noreferrer" class="bg-terracotta-500 hover:bg-terracotta-600 text-white px-6 py-3 rounded-full text-sm font-medium transition-all shadow">
+                            Официальный сайт ведущей
+                        </a>
+                        <button type="button" onclick="openContactModal()" class="border border-sand-200/40 hover:border-sand-200 text-sand-100 px-6 py-3 rounded-full text-sm font-medium transition-all cursor-pointer">
+                            Связаться с ведущей
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Организационные детали -->
+    <section id="details" class="py-24 bg-sand-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-terracotta-500 font-semibold text-sm uppercase tracking-widest block mb-3">Условия участия</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-olive-800 mb-6">Организационные детали</h2>
+                <p class="text-olive-700 text-lg leading-relaxed font-light">
+                    Группа предполагает регулярное посещение и строгую конфиденциальность. Это серьезный терапевтический процесс.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <div class="glass-card p-6 rounded-2xl border border-sand-200 text-center">
+                    <div class="w-12 h-12 rounded-full bg-olive-100 flex items-center justify-center text-olive-800 mx-auto mb-4">
+                        <i data-lucide="map-pin" class="w-6 h-6 text-terracotta-500"></i>
+                    </div>
+                    <div class="text-xs uppercase tracking-wider text-olive-600 font-semibold mb-1">Город</div>
+                    <div class="font-serif font-bold text-xl text-olive-800">Краснодар</div>
+                    <div class="text-xs text-olive-700/70 mt-1">Очное участие</div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-sand-200 text-center">
+                    <div class="w-12 h-12 rounded-full bg-olive-100 flex items-center justify-center text-olive-800 mx-auto mb-4">
+                        <i data-lucide="clock" class="w-6 h-6 text-terracotta-500"></i>
+                    </div>
+                    <div class="text-xs uppercase tracking-wider text-olive-600 font-semibold mb-1">График встреч</div>
+                    <div class="font-serif font-bold text-xl text-olive-800">По четвергам</div>
+                    <div class="text-xs text-olive-700/70 mt-1">2 раза в месяц, 10:00–14:00 (4 часа)</div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-sand-200 text-center">
+                    <div class="w-12 h-12 rounded-full bg-olive-100 flex items-center justify-center text-olive-800 mx-auto mb-4">
+                        <i data-lucide="users" class="w-6 h-6 text-terracotta-500"></i>
+                    </div>
+                    <div class="text-xs uppercase tracking-wider text-olive-600 font-semibold mb-1">Формат группы</div>
+                    <div class="font-serif font-bold text-xl text-olive-800">6–8 человек</div>
+                    <div class="text-xs text-olive-700/70 mt-1">Закрытая группа (19 встреч)</div>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl border border-sand-200 text-center">
+                    <div class="w-12 h-12 rounded-full bg-olive-100 flex items-center justify-center text-olive-800 mx-auto mb-4">
+                        <i data-lucide="credit-card" class="w-6 h-6 text-terracotta-500"></i>
+                    </div>
+                    <div class="text-xs uppercase tracking-wider text-olive-600 font-semibold mb-1">Стоимость</div>
+                    <div class="font-serif font-bold text-xl text-olive-800">4 000 ₽</div>
+                    <div class="text-xs text-olive-700/70 mt-1">Оплата за 1 встречу</div>
+                </div>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-terracotta-500/10 border border-terracotta-500/30 rounded-2xl p-6 sm:p-8 text-center">
+                <h4 class="font-serif font-bold text-olive-800 text-xl mb-2">Количество мест строго ограничено</h4>
+                <p class="text-olive-700 text-sm leading-relaxed mb-6">
+                    Максимальный состав группы — 8 участников. Это необходимо для создания безопасной, доверительной и глубокой атмосферы.
+                </p>
+                <button type="button" onclick="openContactModal()" class="inline-flex items-center justify-center gap-2 bg-terracotta-500 hover:bg-terracotta-600 text-white px-8 py-3.5 rounded-full font-medium transition-all shadow cursor-pointer">
+                    <span>Занять место в группе</span>
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="bg-olive-800 text-sand-100 py-16 border-t border-olive-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex items-center gap-3">
+                <div class="h-16 sm:h-20 flex items-center">
+                    <img src="_9_.png" alt="Логотип" class="h-full w-auto object-contain brightness-0 invert opacity-95">
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-6 text-sm text-sand-200">
+                <a href="https://psyhologyahnickaya.ru/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Сайт ведущей</a>
+                <a href="https://vk.ru/marisabel_ya" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">ВКонтакте</a>
+                <a href="https://max.ru/u/f9LHodD0cOLKdY1Zr_ecYXJdYcEeQWQxhSpxdI93GUIccdBxCsBDjv3QCMI" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Чат в MAX</a>
+            </div>
+
+            <div class="text-xs text-sand-200/60 text-center md:text-right">
+                © 2026 Терапевтическая группа «Где моя энергия».<br>Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно выбора мессенджера -->
+    <div id="contactModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="modal-content bg-sand-50 rounded-3xl p-8 max-w-md w-full shadow-2xl border border-sand-200 relative text-center">
+            <button onclick="closeContactModal()" class="absolute top-5 right-5 text-olive-600 hover:text-olive-800 p-2 rounded-full hover:bg-sand-100 transition-colors cursor-pointer">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <h3 class="font-serif text-2xl font-bold text-olive-800 mb-3">Выберите удобный способ связи</h3>
+            <p class="text-olive-700/80 text-sm mb-8 font-light">
+                Нажмите на предпочитаемый мессенджер, чтобы перейти в чат с ведущей
+            </p>
+
+            <div class="space-y-4">
+                <a href="https://max.ru/u/f9LHodD0cOLKdY1Zr_ecYXJdYcEeQWQxhSpxdI93GUIccdBxCsBDjv3QCMI" target="_blank" rel="noopener noreferrer" onclick="closeContactModal()" class="flex items-center justify-center gap-3 w-full bg-terracotta-500 hover:bg-terracotta-600 text-white py-4 px-6 rounded-2xl font-medium transition-all shadow-md hover:shadow-lg text-base">
+                    <i data-lucide="message-square" class="w-5 h-5"></i>
+                    <span>Написать в MAX</span>
+                </a>
+
+                <a href="https://vk.ru/marisabel_ya" target="_blank" rel="noopener noreferrer" onclick="closeContactModal()" class="flex items-center justify-center gap-3 w-full bg-olive-700 hover:bg-olive-800 text-white py-4 px-6 rounded-2xl font-medium transition-all shadow-md hover:shadow-lg text-base">
+                    <i data-lucide="globe" class="w-5 h-5"></i>
+                    <span>Написать в ВКонтакте</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            }
+        });
+
+        function openContactModal() {
+            const modal = document.getElementById('contactModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target === modal) {
+                closeContactModal();
+            }
+        });
+    </script>
+</body>
+</html>
